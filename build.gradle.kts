@@ -3,6 +3,7 @@ val logback_version: String by project
 val prometheus_version: String by project
 val kotlinx_html_version: String by project
 val mongo_version: String by project
+val application_version: String by project
 
 plugins {
     kotlin("jvm") version "2.0.0"
@@ -11,7 +12,8 @@ plugins {
 }
 
 group = "ca.kittle"
-version = "0.0.1"
+version = "0.0.1-alpha"
+project.ext.set("development", "true")
 
 application {
     mainClass.set("ca.kittle.ApplicationKt")
@@ -23,6 +25,23 @@ application {
 repositories {
     mavenCentral()
     maven { url = uri("https://maven.pkg.jetbrains.space/kotlin/p/kotlin/kotlin-js-wrappers") }
+}
+
+ktor {
+    docker {
+        jreVersion.set(JavaVersion.VERSION_17)
+        localImageName.set("party-connections-image")
+        imageTag.set(application_version)
+        portMappings.set(
+            listOf(
+                io.ktor.plugin.features.DockerPortMapping(
+                    80,
+                    8080,
+                    io.ktor.plugin.features.DockerPortMappingProtocol.TCP,
+                ),
+            ),
+        )
+    }
 }
 
 dependencies {

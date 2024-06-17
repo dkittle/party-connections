@@ -12,12 +12,12 @@ fun main() {
 
 fun Application.module() {
     configureHTTP()
-    configureMonitoring()
+//    configureMonitoring()
     configureSerialization()
-    configureTemplating()
+//    configureTemplating()
     configureDatabases()
-    configureSockets()
-    configureAdministration()
-    configureSecurity()
+//    configureSockets()
+//    configureAdministration()
+//    configureSecurity()
     configureRouting()
 }

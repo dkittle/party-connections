@@ -1,28 +1,31 @@
 package ca.kittle.party.components
 
+import ca.kittle.web.BUTTON_STYLE
+import ca.kittle.web.FORM_STYLE
+import ca.kittle.web.TEXT_INPUT_STYLE
 import kotlinx.html.*
 
-private fun FlowContent.newPartyForm(
-    nameEnabled: Boolean,
-    emailEnabled: Boolean,
-    lastOnlineEnabled: Boolean,
-) = form {
-    classes = setOf("max-w-sm", "mx-auto", "my-4", "gap-2")
-
-    input {
-        id = "name"
-        name = "name"
-        type = InputType.text
-        classes = setOf("w-full", "h-8", "border-2", "border-neutral-200", "rounded-md")
-        value = ""
-        autoFocus = true
+fun FlowContent.newPartyForm() =
+    form {
+        classes = FORM_STYLE
+        attributes["hx-post"] = "/party"
+        attributes["hx-target"] = "#page-content"
+        attributes["hx-ext"] = "json-enc"
+        label {
+            htmlFor = "name"
+            +"Party Name "
+        }
+        input {
+            id = "name"
+            name = "name"
+            type = InputType.text
+            classes = TEXT_INPUT_STYLE
+            value = ""
+            autoFocus = true
+        }
+        button {
+            classes = BUTTON_STYLE
+            type = ButtonType.submit
+            +"Create Party"
+        }
     }
-    label {
-        htmlFor = "name"
-        +" Name"
-    }
-    br { }
-    button {
-
-    }
-}
