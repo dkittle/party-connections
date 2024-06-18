@@ -1,8 +1,8 @@
 package ca.kittle.party
 
+import ca.kittle.db.models.PartyEntity
+import ca.kittle.db.models.toDocument
 import ca.kittle.party.models.Party
-import ca.kittle.party.models.db.PartyEntity
-import ca.kittle.party.models.db.toDocument
 import ca.kittle.plugins.dbConnection
 import com.mongodb.client.model.Filters
 import io.ktor.server.application.*
@@ -33,3 +33,15 @@ suspend fun createParty(party: Party): String =
                 party.id
             }
     }
+
+// suspend fun update(party: Party): Document? =
+//    withContext(Dispatchers.IO) {
+//        val collection = dbConnection.getCollection(PartyEntity.COLLECTION_NAME)
+//        collection.findOneAndReplace(Filters.eq("_id", party.id), party.toDocument())
+//    }
+//
+// suspend fun delete(id: String): Document? =
+//    withContext(Dispatchers.IO) {
+//        val collection = dbConnection.getCollection(PartyEntity.COLLECTION_NAME)
+//        collection.findOneAndDelete(Filters.eq("_id", id))
+//    }

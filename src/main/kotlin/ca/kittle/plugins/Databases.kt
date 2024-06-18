@@ -1,7 +1,7 @@
 package ca.kittle.plugins
 
-import ca.kittle.party.models.db.PartyEntity
-import ca.kittle.party.models.db.PlayerCharacterEntity
+import ca.kittle.db.models.PartyEntity
+import ca.kittle.db.models.PlayerCharacterEntity
 import com.mongodb.MongoCommandException
 import com.mongodb.client.MongoClients
 import com.mongodb.client.MongoDatabase
@@ -20,38 +20,6 @@ fun Application.configureDatabases() {
     } catch (e: MongoCommandException) {
         // do nothing as the collection is already created
     }
-
-//    val carService = CarService(mongoDatabase)
-//    routing {
-//        // Create car
-//        post("/cars") {
-//            val car = call.receive<Car>()
-//            val id = carService.create(car)
-//            call.respond(HttpStatusCode.Created, id)
-//        }
-//        // Read car
-//        get("/cars/{id}") {
-//            val id = call.parameters["id"] ?: throw IllegalArgumentException("No ID found")
-//            carService.read(id)?.let { car ->
-//                call.respond(car)
-//            } ?: call.respond(HttpStatusCode.NotFound)
-//        }
-//        // Update car
-//        put("/cars/{id}") {
-//            val id = call.parameters["id"] ?: throw IllegalArgumentException("No ID found")
-//            val car = call.receive<Car>()
-//            carService.update(id, car)?.let {
-//                call.respond(HttpStatusCode.OK)
-//            } ?: call.respond(HttpStatusCode.NotFound)
-//        }
-//        // Delete car
-//        delete("/cars/{id}") {
-//            val id = call.parameters["id"] ?: throw IllegalArgumentException("No ID found")
-//            carService.delete(id)?.let {
-//                call.respond(HttpStatusCode.OK)
-//            } ?: call.respond(HttpStatusCode.NotFound)
-//        }
-//    }
 }
 
 /**
@@ -86,7 +54,6 @@ fun Application.connectToMongoDB(): MongoDatabase {
     val database = mongoClient.getDatabase(databaseName)
 
     environment.monitor.subscribe(ApplicationStopped) {
-//        database.drop()
         mongoClient.close()
     }
     dbConnection = database

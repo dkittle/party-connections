@@ -1,6 +1,7 @@
 package ca.kittle.plugins
 
 import ca.kittle.party.createParty
+import ca.kittle.party.listParties
 import ca.kittle.party.showParty
 import ca.kittle.pc.createPlayerCharacter
 import ca.kittle.web.index
@@ -22,6 +23,7 @@ fun Application.configureRouting() {
         // Party pages
         createParty()
         showParty()
+        listParties()
         // Character pages
         createPlayerCharacter()
     }

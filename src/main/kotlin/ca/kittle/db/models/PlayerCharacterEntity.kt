@@ -1,6 +1,6 @@
-package ca.kittle.party.models.db
+package ca.kittle.db.models
 
-import ca.kittle.party.models.PlayerCharacter
+import ca.kittle.pc.models.PlayerCharacter
 import ca.kittle.util.json
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json

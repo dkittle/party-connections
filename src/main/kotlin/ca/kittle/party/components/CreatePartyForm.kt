@@ -5,7 +5,7 @@ import ca.kittle.web.FORM_STYLE
 import ca.kittle.web.TEXT_INPUT_STYLE
 import kotlinx.html.*
 
-fun FlowContent.newPartyForm() =
+fun FlowContent.createPartyForm() =
     form {
         classes = FORM_STYLE
         attributes["hx-post"] = "/party"

@@ -1,10 +1,10 @@
 package ca.kittle.party
 
+import ca.kittle.db.models.PartyEntity
+import ca.kittle.db.models.PlayerCharacterEntity
 import ca.kittle.party.components.populateParty
 import ca.kittle.party.models.Party
-import ca.kittle.party.models.PlayerCharacter
-import ca.kittle.party.models.db.PartyEntity
-import ca.kittle.party.models.db.PlayerCharacterEntity
+import ca.kittle.pc.models.PlayerCharacter
 import ca.kittle.plugins.dbConnection
 import com.mongodb.client.model.Filters
 import io.ktor.server.application.*
@@ -13,7 +13,6 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import kotlinx.css.body
 import kotlinx.html.body
 
 fun Routing.showParty() {

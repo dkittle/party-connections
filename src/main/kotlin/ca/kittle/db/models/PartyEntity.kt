@@ -1,4 +1,4 @@
-package ca.kittle.party.models.db
+package ca.kittle.db.models
 
 import ca.kittle.party.models.Party
 import ca.kittle.util.json

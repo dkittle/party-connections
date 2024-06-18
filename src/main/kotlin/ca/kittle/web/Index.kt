@@ -1,6 +1,6 @@
 package ca.kittle.web
 
-import ca.kittle.party.components.newPartyForm
+import ca.kittle.party.components.createPartyForm
 import io.ktor.server.application.*
 import io.ktor.server.html.*
 import io.ktor.server.http.content.*
@@ -29,7 +29,14 @@ fun Routing.index() {
                 classes = BODY_STYLE
                 div {
                     id = "page-content"
-                    newPartyForm()
+                    createPartyForm()
+                    button {
+                        classes = BUTTON_STYLE
+                        attributes["hx-get"] = "/parties"
+                        attributes["hx-target"] = "#page-content"
+                        type = ButtonType.button
+                        +"List all parties"
+                    }
                 }
             }
         }

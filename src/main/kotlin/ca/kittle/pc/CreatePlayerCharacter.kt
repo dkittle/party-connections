@@ -1,8 +1,8 @@
 package ca.kittle.pc
 
-import ca.kittle.party.models.PlayerCharacter
-import ca.kittle.party.models.db.PlayerCharacterEntity
-import ca.kittle.party.models.db.toDocument
+import ca.kittle.db.models.PlayerCharacterEntity
+import ca.kittle.db.models.toDocument
+import ca.kittle.pc.models.PlayerCharacter
 import ca.kittle.plugins.dbConnection
 import io.ktor.server.application.*
 import io.ktor.server.request.*
