@@ -20,6 +20,7 @@ fun FlowContent.createPartyForm() =
             name = "name"
             type = InputType.text
             classes = TEXT_INPUT_STYLE
+            placeholder = "Enter a party name"
             value = ""
             autoFocus = true
         }

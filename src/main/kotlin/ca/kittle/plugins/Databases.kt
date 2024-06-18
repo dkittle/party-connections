@@ -1,8 +1,5 @@
 package ca.kittle.plugins
 
-import ca.kittle.db.models.PartyEntity
-import ca.kittle.db.models.PlayerCharacterEntity
-import com.mongodb.MongoCommandException
 import com.mongodb.client.MongoClients
 import com.mongodb.client.MongoDatabase
 import io.ktor.server.application.*
@@ -10,16 +7,6 @@ import io.ktor.server.config.*
 
 fun Application.configureDatabases() {
     val mongoDatabase = connectToMongoDB()
-    try {
-        mongoDatabase.createCollection(PartyEntity.COLLECTION_NAME)
-    } catch (e: MongoCommandException) {
-        // do nothing as the collection is already created
-    }
-    try {
-        mongoDatabase.createCollection(PlayerCharacterEntity.COLLECTION_NAME)
-    } catch (e: MongoCommandException) {
-        // do nothing as the collection is already created
-    }
 }
 
 /**
