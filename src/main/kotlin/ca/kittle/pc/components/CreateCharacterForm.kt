@@ -145,8 +145,8 @@ fun FlowContent.createCharacterForm(partyId: String) =
                     classes = TEXT_INPUT_STYLE
                     minLength = "1"
                     maxLength = "5000"
-                    rows = "5"
-                    cols = "40"
+                    rows = ""
+                    cols = ""
                 }
             }
         }
