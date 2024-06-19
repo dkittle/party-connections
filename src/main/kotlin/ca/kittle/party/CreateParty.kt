@@ -1,4 +1,47 @@
 package ca.kittle.party
 
-class CreateParty {
+import ca.kittle.db.models.PartyEntity
+import ca.kittle.db.models.toDocument
+import ca.kittle.party.models.Party
+import ca.kittle.plugins.dbConnection
+import com.mongodb.client.model.Filters
+import io.ktor.server.application.*
+import io.ktor.server.html.*
+import io.ktor.server.request.*
+import io.ktor.server.response.*
+import io.ktor.server.routing.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+
+// private val logger = KotlinLogging.logger {}
+
+fun Routing.createParty() {
+    post("/party") {
+        val party: Party = call.receive()
+        val id = createParty(party)
+        call.respondRedirect("/party/$id")
+    }
 }
+
+suspend fun createParty(party: Party): String =
+    withContext(Dispatchers.IO) {
+        val collection = dbConnection.getCollection(PartyEntity.COLLECTION_NAME)
+        collection.find(Filters.eq(Party::name.name, party.name)).first()
+            ?.let(PartyEntity::fromDocument)?.id
+            ?: run {
+                collection.insertOne(party.toDocument())
+                party.id
+            }
+    }
+
+// suspend fun update(party: Party): Document? =
+//    withContext(Dispatchers.IO) {
+//        val collection = dbConnection.getCollection(PartyEntity.COLLECTION_NAME)
+//        collection.findOneAndReplace(Filters.eq("_id", party.id), party.toDocument())
+//    }
+//
+// suspend fun delete(id: String): Document? =
+//    withContext(Dispatchers.IO) {
+//        val collection = dbConnection.getCollection(PartyEntity.COLLECTION_NAME)
+//        collection.findOneAndDelete(Filters.eq("_id", id))
+//    }
