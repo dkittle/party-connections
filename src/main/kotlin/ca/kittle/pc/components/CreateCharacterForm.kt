@@ -31,31 +31,10 @@ fun FlowContent.createCharacterForm(partyId: String) =
                     name = "name"
                     type = InputType.text
                     classes = TEXT_INPUT_STYLE
+                    placeholder = "Character name"
                     value = ""
                     required = true
                     autoFocus = true
-                }
-            }
-        }
-        div {
-            classes = FOUR_COLUMNS
-            div {
-                classes = ONE_COLUMN_SPAN
-                label {
-                    classes = LABEL_STYLE
-                    htmlFor = "gender"
-                    +"Gender"
-                }
-            }
-            div {
-                classes = THREE_COLUMN_SPAN
-                input {
-                    id = "gender"
-                    name = "gender"
-                    type = InputType.text
-                    required = true
-                    classes = TEXT_INPUT_STYLE
-                    value = ""
                 }
             }
         }
@@ -75,6 +54,7 @@ fun FlowContent.createCharacterForm(partyId: String) =
                     id = "ancestry"
                     name = "ancestry"
                     type = InputType.text
+                    placeholder = "Elf, Dwarf, Human, etc"
                     required = true
                     classes = TEXT_INPUT_STYLE
                     value = ""
@@ -98,6 +78,30 @@ fun FlowContent.createCharacterForm(partyId: String) =
                     id = "baseClass"
                     name = "baseClass"
                     type = InputType.text
+                    placeholder = "Cleric, Fighter, Wizard, etc"
+                    required = true
+                    classes = TEXT_INPUT_STYLE
+                    value = ""
+                }
+            }
+        }
+        div {
+            classes = FOUR_COLUMNS
+            div {
+                classes = ONE_COLUMN_SPAN
+                label {
+                    classes = LABEL_STYLE
+                    htmlFor = "background"
+                    +"Background"
+                }
+            }
+            div {
+                classes = THREE_COLUMN_SPAN
+                input {
+                    id = "background"
+                    name = "background"
+                    type = InputType.text
+                    placeholder = "Acolyte, Sage, Urchin, etc"
                     required = true
                     classes = TEXT_INPUT_STYLE
                     value = ""
@@ -120,6 +124,7 @@ fun FlowContent.createCharacterForm(partyId: String) =
                     id = "role"
                     name = "role"
                     type = InputType.text
+                    placeholder = "Controller, Tank, The Face, etc"
                     required = true
                     classes = TEXT_INPUT_STYLE
                     value = ""
@@ -145,7 +150,7 @@ fun FlowContent.createCharacterForm(partyId: String) =
                     classes = TEXT_INPUT_STYLE
                     minLength = "1"
                     maxLength = "5000"
-                    rows = ""
+                    rows = "5"
                     cols = ""
                 }
             }

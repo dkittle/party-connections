@@ -8,10 +8,10 @@ import java.util.UUID
 @Serializable
 data class PlayerCharacter(
     val name: String,
-    val gender: String,
     val ancestry: String,
     val baseClass: String,
     val role: String,
+    val background: String,
     val backstory: String,
     val partyId: String,
     @Contextual @SerialName("_id")
