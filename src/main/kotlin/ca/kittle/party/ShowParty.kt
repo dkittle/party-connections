@@ -16,16 +16,19 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.css.body
 import kotlinx.html.body
+import mu.KotlinLogging
+
+private val logger = KotlinLogging.logger {}
 
 context(MongoDatabase)
 fun Routing.showParty() {
     get("/party/{id}") {
         val party =
             call.parameters["id"]?.let { id ->
-                getParty(id)
+                getParty(id).getOrThrow()
             }
         party?.apply {
-            val pcs = getPlayerCharacters(id)
+            val pcs = getPlayerCharacters(id).getOrThrow()
             call.respondHtml {
                 body {
                     populateParty(party, pcs)
@@ -37,17 +40,25 @@ fun Routing.showParty() {
 }
 
 context(MongoDatabase)
-suspend fun getParty(id: String): Party? =
+suspend fun getParty(id: String): Result<Party?> =
     withContext(Dispatchers.IO) {
-        val collection = this@MongoDatabase.getCollection(PartyEntity.COLLECTION_NAME)
-        collection.find(Filters.eq("_id", id)).first()
-            ?.let(PartyEntity::fromDocument)
+        runCatching {
+            val collection = this@MongoDatabase.getCollection(PartyEntity.COLLECTION_NAME)
+            collection.find(Filters.eq("_id", id)).first()
+                ?.let(PartyEntity::fromDocument)
+        }
+    }.onFailure {
+        logger.error("Error getting party", it)
     }
 
 context(MongoDatabase)
-suspend fun getPlayerCharacters(id: String): List<PlayerCharacter> =
+suspend fun getPlayerCharacters(id: String): Result<List<PlayerCharacter>> =
     withContext(Dispatchers.IO) {
-        val collection = this@MongoDatabase.getCollection(PlayerCharacterEntity.COLLECTION_NAME)
-        collection.find(Filters.eq(PlayerCharacter::partyId.name, id)).toList()
-            .map { PlayerCharacterEntity.fromDocument(it) }
+        runCatching {
+            val collection = this@MongoDatabase.getCollection(PlayerCharacterEntity.COLLECTION_NAME)
+            collection.find(Filters.eq(PlayerCharacter::partyId.name, id)).toList()
+                .map { PlayerCharacterEntity.fromDocument(it) }
+        }
+    }.onFailure {
+        logger.error("Error getting party's player characters", it)
     }
