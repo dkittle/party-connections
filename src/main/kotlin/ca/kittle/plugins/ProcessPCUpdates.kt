@@ -16,7 +16,11 @@ import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.Application
+import io.ktor.server.application.ApplicationStopping
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.flow
@@ -30,7 +34,11 @@ private val logger = KotlinLogging.logger {}
 
 context(MongoDatabase, LlmConnection)
 fun Application.processPCUpdates() {
-    launch {
+    val applicationScope = CoroutineScope(this.coroutineContext + SupervisorJob())
+    environment.monitor.subscribe(ApplicationStopping) {
+        applicationScope.cancel()
+    }
+    applicationScope.launch {
         logger.info { "Starting player character update flow" }
         consumePlayerCharacterUpdates().flowOn(Dispatchers.IO).collect { pc ->
             val backstory = pc.backstory
