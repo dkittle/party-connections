@@ -44,7 +44,7 @@ fun Application.connectToMongoDB(): MongoDatabase {
     val mongoClient = MongoClients.create(uri)
     val mongoConnection = mongoClient.getDatabase(databaseName)
 
-    logger.info { "Creating application stopped shutdown hook" }
+    logger.info { "Creating application stopped shutdown hook to close Mongo connection" }
     environment.monitor.subscribe(ApplicationStopped) {
         mongoClient.close()
     }
