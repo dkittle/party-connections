@@ -13,7 +13,6 @@ services:
       interval: 5s
       timeout: 30s
       start_period: 0s
-      start_interval: 1s
       retries: 30
     volumes:
       - "mongo1_data:/data/db"
@@ -48,4 +47,3 @@ volumes:
   mongo1_config:
   mongo2_config:
   mongo3_config:
-  
