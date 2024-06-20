@@ -83,10 +83,11 @@ suspend fun generateBackstorySummary(
                 ),
             )
         }
-    return if (llmResponse.status != HttpStatusCode.OK) {
+    return if (llmResponse.status == HttpStatusCode.OK) {
         val resp = llmResponse.body<GenerateResponse>()
         resp.response
     } else {
+        logger.warn { "LLM failed to generate backstory summary" }
         backstory
     }
 }
