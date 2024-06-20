@@ -3,35 +3,42 @@ package ca.kittle.party
 import ca.kittle.db.models.PartyEntity
 import ca.kittle.db.models.toDocument
 import ca.kittle.party.models.Party
-import ca.kittle.plugins.dbConnection
+import com.mongodb.client.MongoDatabase
 import com.mongodb.client.model.Filters
-import io.ktor.server.application.*
-import io.ktor.server.html.*
-import io.ktor.server.request.*
-import io.ktor.server.response.*
-import io.ktor.server.routing.*
+import io.ktor.server.application.call
+import io.ktor.server.request.receive
+import io.ktor.server.response.respondRedirect
+import io.ktor.server.routing.Routing
+import io.ktor.server.routing.post
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import mu.KotlinLogging
 
-// private val logger = KotlinLogging.logger {}
+private val logger = KotlinLogging.logger {}
 
+context(MongoDatabase)
 fun Routing.createParty() {
     post("/party") {
         val party: Party = call.receive()
-        val id = createParty(party)
+        val id = createParty(party).getOrThrow()
         call.respondRedirect("/party/$id")
     }
 }
 
-suspend fun createParty(party: Party): String =
+context(MongoDatabase)
+suspend fun createParty(party: Party): Result<String> =
     withContext(Dispatchers.IO) {
-        val collection = dbConnection.getCollection(PartyEntity.COLLECTION_NAME)
-        collection.find(Filters.eq(Party::name.name, party.name)).first()
-            ?.let(PartyEntity::fromDocument)?.id
-            ?: run {
-                collection.insertOne(party.toDocument())
-                party.id
-            }
+        runCatching {
+            val collection = this@MongoDatabase.getCollection(PartyEntity.COLLECTION_NAME)
+            collection.find(Filters.eq(Party::name.name, party.name)).first()
+                ?.let(PartyEntity::fromDocument)?.id
+                ?: run {
+                    collection.insertOne(party.toDocument())
+                    party.id
+                }
+        }.onFailure {
+            logger.error("Error creating party", it)
+        }
     }
 
 // suspend fun update(party: Party): Document? =
