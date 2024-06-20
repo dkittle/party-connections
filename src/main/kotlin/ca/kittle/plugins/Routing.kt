@@ -5,12 +5,15 @@ import ca.kittle.party.listParties
 import ca.kittle.party.showParty
 import ca.kittle.pc.createPlayerCharacter
 import ca.kittle.web.index
-import io.ktor.http.*
-import io.ktor.server.application.*
-import io.ktor.server.plugins.statuspages.*
-import io.ktor.server.response.*
-import io.ktor.server.routing.*
+import com.mongodb.client.MongoDatabase
+import io.ktor.http.HttpStatusCode
+import io.ktor.server.application.Application
+import io.ktor.server.application.install
+import io.ktor.server.plugins.statuspages.StatusPages
+import io.ktor.server.response.respondText
+import io.ktor.server.routing.routing
 
+context(MongoDatabase)
 fun Application.configureRouting() {
     install(StatusPages) {
         exception<Throwable> { call, cause ->

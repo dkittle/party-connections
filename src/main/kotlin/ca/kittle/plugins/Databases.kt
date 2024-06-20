@@ -2,11 +2,15 @@ package ca.kittle.plugins
 
 import com.mongodb.client.MongoClients
 import com.mongodb.client.MongoDatabase
-import io.ktor.server.application.*
-import io.ktor.server.config.*
+import io.ktor.server.application.Application
+import io.ktor.server.application.ApplicationStopped
+import io.ktor.server.config.tryGetString
+import mu.KotlinLogging
 
-fun Application.configureDatabases() {
-    val mongoDatabase = connectToMongoDB()
+private val logger = KotlinLogging.logger {}
+
+fun Application.configureDatabases(): MongoDatabase {
+    return connectToMongoDB()
 }
 
 /**
@@ -27,7 +31,7 @@ fun Application.configureDatabases() {
  * @returns [MongoDatabase] instance
  * */
 fun Application.connectToMongoDB(): MongoDatabase {
-    val user = environment.config.tryGetString("db.mongo.user") ?: "mongoadmin"
+    val user = environment.config.tryGetString("db.mongo.user") ?: System.getenv("MONGO_USER")
     val password = environment.config.tryGetString("db.mongo.password") ?: System.getenv("MONGO_PASSWORD")
     val host = environment.config.tryGetString("db.mongo.host") ?: "127.0.0.1"
     val port = environment.config.tryGetString("db.mongo.port") ?: "27017"
@@ -35,16 +39,14 @@ fun Application.connectToMongoDB(): MongoDatabase {
     val databaseName = environment.config.tryGetString("db.mongo.database.name") ?: "PartyConnections"
 
     val credentials = user.let { userVal -> password?.let { passwordVal -> "$userVal:$passwordVal@" } }.orEmpty()
-    val uri = "mongodb://$credentials$host:$port/?maxPoolSize=$maxPoolSize&w=majority"
+    val uri = "mongodb://$credentials$host:$port/?replicaSet=rs0&maxPoolSize=$maxPoolSize&w=majority"
 
     val mongoClient = MongoClients.create(uri)
-    val database = mongoClient.getDatabase(databaseName)
+    val mongoConnection = mongoClient.getDatabase(databaseName)
 
+    logger.info { "Creating application stopped shutdown hook" }
     environment.monitor.subscribe(ApplicationStopped) {
         mongoClient.close()
     }
-    dbConnection = database
-    return database
+    return mongoConnection
 }
-
-lateinit var dbConnection: MongoDatabase

@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 val kotlin_version: String by project
 val logback_version: String by project
 val prometheus_version: String by project
@@ -51,29 +53,33 @@ dependencies {
     implementation("io.ktor:ktor-server-caching-headers-jvm")
     implementation("io.ktor:ktor-server-compression-jvm")
     implementation("io.ktor:ktor-server-forwarded-header-jvm")
-    implementation("com.ucasoft.ktor:ktor-simple-cache-jvm:0.3.1")
-    implementation("com.ucasoft.ktor:ktor-simple-redis-cache-jvm:0.3.1")
     implementation("io.ktor:ktor-server-call-logging-jvm")
     implementation("io.ktor:ktor-server-call-id-jvm")
     implementation("io.ktor:ktor-server-metrics-jvm")
     implementation("io.ktor:ktor-server-metrics-micrometer-jvm")
-    implementation("io.micrometer:micrometer-registry-prometheus:$prometheus_version")
     implementation("io.ktor:ktor-server-content-negotiation-jvm")
     implementation("io.ktor:ktor-serialization-kotlinx-json-jvm")
     implementation("io.ktor:ktor-server-html-builder-jvm")
     implementation("org.jetbrains.kotlinx:kotlinx-html-jvm:$kotlinx_html_version")
     implementation("org.jetbrains:kotlin-css-jvm:1.0.0-pre.129-kotlin-1.4.20")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
     implementation("org.mongodb:mongodb-driver-core:$mongo_version")
     implementation("org.mongodb:mongodb-driver-sync:$mongo_version")
     implementation("org.mongodb:bson:$mongo_version")
     implementation("io.ktor:ktor-server-websockets-jvm")
-    implementation("io.ktor:ktor-server-auth-jvm")
-    implementation("io.ktor:ktor-server-auth-jwt-jvm")
     implementation("io.ktor:ktor-client-core-jvm")
+    implementation("io.ktor:ktor-client-logging")
     implementation("io.ktor:ktor-client-apache-jvm")
-    implementation("io.ktor:ktor-server-sessions-jvm")
+    implementation("io.ktor:ktor-client-content-negotiation")
     implementation("io.ktor:ktor-server-netty-jvm")
+    implementation("io.github.microutils:kotlin-logging-jvm:3.0.4")
     implementation("ch.qos.logback:logback-classic:$logback_version")
     testImplementation("io.ktor:ktor-server-tests-jvm")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
+}
+
+tasks.withType<KotlinCompile>().configureEach {
+    kotlinOptions {
+        freeCompilerArgs = freeCompilerArgs + "-Xcontext-receivers"
+    }
 }
