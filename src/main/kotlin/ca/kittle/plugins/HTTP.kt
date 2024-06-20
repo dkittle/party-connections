@@ -8,8 +8,6 @@ import io.ktor.server.plugins.compression.Compression
 import io.ktor.server.plugins.compression.deflate
 import io.ktor.server.plugins.compression.gzip
 import io.ktor.server.plugins.compression.minimumSize
-import io.ktor.server.plugins.forwardedheaders.ForwardedHeaders
-import io.ktor.server.plugins.forwardedheaders.XForwardedHeaders
 
 fun Application.configureHTTP() {
     install(CachingHeaders) {
@@ -35,6 +33,4 @@ fun Application.configureHTTP() {
             minimumSize(1024) // condition
         }
     }
-    install(ForwardedHeaders) // WARNING: for security, do not include this if not behind a reverse proxy
-    install(XForwardedHeaders) // WARNING: for security, do not include this if not behind a reverse proxy
 }
