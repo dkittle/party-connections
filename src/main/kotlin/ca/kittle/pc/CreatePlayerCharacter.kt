@@ -11,6 +11,9 @@ import io.ktor.server.routing.Routing
 import io.ktor.server.routing.post
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import mu.KotlinLogging
+
+private val logger = KotlinLogging.logger {}
 
 context(MongoDatabase)
 fun Routing.createPlayerCharacter() {
@@ -22,9 +25,13 @@ fun Routing.createPlayerCharacter() {
 }
 
 context(MongoDatabase)
-suspend fun createPlayerCharacter(pc: PlayerCharacter): String =
+suspend fun createPlayerCharacter(pc: PlayerCharacter): Result<String> =
     withContext(Dispatchers.IO) {
-        val collection = this@MongoDatabase.getCollection(PlayerCharacterEntity.COLLECTION_NAME)
-        collection.insertOne(pc.toDocument())
-        pc.id
+        runCatching {
+            val collection = this@MongoDatabase.getCollection(PlayerCharacterEntity.COLLECTION_NAME)
+            collection.insertOne(pc.toDocument())
+            pc.id
+        }.onFailure {
+            logger.error("Error creating player character", it)
+        }
     }
