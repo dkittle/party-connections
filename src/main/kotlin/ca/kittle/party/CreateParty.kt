@@ -20,21 +20,25 @@ context(MongoDatabase)
 fun Routing.createParty() {
     post("/party") {
         val party: Party = call.receive()
-        val id = createParty(party)
+        val id = createParty(party).getOrThrow()
         call.respondRedirect("/party/$id")
     }
 }
 
 context(MongoDatabase)
-suspend fun createParty(party: Party): String =
+suspend fun createParty(party: Party): Result<String> =
     withContext(Dispatchers.IO) {
-        val collection = this@MongoDatabase.getCollection(PartyEntity.COLLECTION_NAME)
-        collection.find(Filters.eq(Party::name.name, party.name)).first()
-            ?.let(PartyEntity::fromDocument)?.id
-            ?: run {
-                collection.insertOne(party.toDocument())
-                party.id
-            }
+        runCatching {
+            val collection = this@MongoDatabase.getCollection(PartyEntity.COLLECTION_NAME)
+            collection.find(Filters.eq(Party::name.name, party.name)).first()
+                ?.let(PartyEntity::fromDocument)?.id
+                ?: run {
+                    collection.insertOne(party.toDocument())
+                    party.id
+                }
+        }.onFailure {
+            logger.error("Error creating party", it)
+        }
     }
 
 // suspend fun update(party: Party): Document? =
