@@ -25,8 +25,8 @@ fun Application.startOllama(): LlmConnection {
             HttpClient {
                 install(Logging)
                 install(HttpTimeout) {
-                    requestTimeoutMillis = 120_000
-                    socketTimeoutMillis = 120_000
+                    requestTimeoutMillis = 180_000
+                    socketTimeoutMillis = 180_000
                 }
                 install(HttpRequestRetry) {
                     maxRetries = 5
