@@ -64,8 +64,8 @@ fun Application.startOllama(): LlmConnection {
 
 suspend fun loadLlmModel(llmConnection: LlmConnection): Boolean {
     val resp =
-        llmConnection.llmClient.post("${llmConnection.llmUrl}generate") {
-            setBody("{ \"model\": \"${llmConnection.model}\" }")
+        llmConnection.llmClient.post("${llmConnection.llmUrl}pull") {
+            setBody("{ \"name\": \"${llmConnection.model}\" }")
         }
     return resp.status == HttpStatusCode.OK
 }
