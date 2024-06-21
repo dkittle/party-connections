@@ -1,8 +1,8 @@
-package ca.kittle.pc
+package ca.kittle.capabilities.pc
 
+import ca.kittle.capabilities.pc.models.PlayerCharacter
 import ca.kittle.db.models.PlayerCharacterEntity
 import ca.kittle.db.models.toDocument
-import ca.kittle.pc.models.PlayerCharacter
 import com.mongodb.client.MongoDatabase
 import io.ktor.server.application.call
 import io.ktor.server.request.receive

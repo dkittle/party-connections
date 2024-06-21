@@ -1,6 +1,6 @@
 package ca.kittle.db.models
 
-import ca.kittle.party.models.Party
+import ca.kittle.capabilities.party.models.Party
 import ca.kittle.util.json
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json

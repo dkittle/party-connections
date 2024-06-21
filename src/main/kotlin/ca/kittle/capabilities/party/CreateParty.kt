@@ -1,8 +1,8 @@
-package ca.kittle.party
+package ca.kittle.capabilities.party
 
+import ca.kittle.capabilities.party.models.Party
 import ca.kittle.db.models.PartyEntity
 import ca.kittle.db.models.toDocument
-import ca.kittle.party.models.Party
 import com.mongodb.client.MongoDatabase
 import com.mongodb.client.model.Filters
 import io.ktor.server.application.call

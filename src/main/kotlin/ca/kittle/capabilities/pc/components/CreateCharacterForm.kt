@@ -1,4 +1,4 @@
-package ca.kittle.pc.components
+package ca.kittle.capabilities.pc.components
 
 import ca.kittle.web.*
 import kotlinx.html.*

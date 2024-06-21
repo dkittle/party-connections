@@ -1,4 +1,4 @@
-package ca.kittle.party.components
+package ca.kittle.capabilities.party.components
 
 import ca.kittle.web.BUTTON_STYLE
 import ca.kittle.web.FORM_STYLE
