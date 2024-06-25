@@ -20,19 +20,17 @@ The `plugins` package configures various aspects of the application including th
 
 The `web` package contains the `index` route and HTML elements along with a Styles CSS file that offers sets of Tailwind CSS classes for components.
 
-TODO currently the connection to ollama is done within an `Application` function in the plugins package and this needs to be moved elsewhere.
+TODO currently the connection to Ollama is done within an `Application` function in the plugins package and this needs to be moved elsewhere.
 
 ## Local Dev Setup
 
 Add `127.0.0.1 host.docker.internal` to your host machine's `/etc/hosts` file.
 
-Run `docker compose up` to create a single node MongoDB replica set.
-
-Start Ollama in server mode with `ollama serve`
+Run `docker compose up` to create a single node MongoDB replica set and start the Ollama server.
 
 Set the environment variable `LLM_URL=http://localhost:11434/api/`
 
 ## Run the app
 
-The first time the app runs, Ollama will download the llama3 80B parameter model so it'll take a while to start.
+The first time the app runs, Ollama will download the llama3 8B parameter model, so it'll take a while to start.
 
