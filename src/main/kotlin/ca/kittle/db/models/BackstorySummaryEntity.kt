@@ -1,6 +1,6 @@
 package ca.kittle.db.models
 
-import ca.kittle.backstory.BackstorySummary
+import ca.kittle.capabilities.backstory.models.BackstorySummary
 import ca.kittle.util.json
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json

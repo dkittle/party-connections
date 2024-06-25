@@ -1,11 +1,20 @@
 package ca.kittle.web
 
-import ca.kittle.party.components.createPartyForm
-import io.ktor.server.application.*
-import io.ktor.server.html.*
-import io.ktor.server.http.content.*
-import io.ktor.server.routing.*
-import kotlinx.html.*
+import ca.kittle.capabilities.party.components.createPartyForm
+import io.ktor.server.application.call
+import io.ktor.server.html.respondHtml
+import io.ktor.server.http.content.resources
+import io.ktor.server.http.content.static
+import io.ktor.server.routing.Routing
+import io.ktor.server.routing.get
+import kotlinx.html.body
+import kotlinx.html.button
+import kotlinx.html.classes
+import kotlinx.html.div
+import kotlinx.html.head
+import kotlinx.html.id
+import kotlinx.html.meta
+import kotlinx.html.script
 
 fun Routing.index() {
     get("") {
@@ -34,7 +43,7 @@ fun Routing.index() {
                         classes = BUTTON_STYLE
                         attributes["hx-get"] = "/parties"
                         attributes["hx-target"] = "#page-content"
-                        type = ButtonType.button
+                        type = kotlinx.html.ButtonType.button
                         +"List all parties"
                     }
                 }

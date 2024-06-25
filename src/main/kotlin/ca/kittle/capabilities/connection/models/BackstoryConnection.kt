@@ -1,4 +1,4 @@
-package ca.kittle.connection.models
+package ca.kittle.capabilities.connection.models
 
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.SerialName

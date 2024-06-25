@@ -1,4 +1,4 @@
-package ca.kittle.backstory
+package ca.kittle.capabilities.backstory.models
 
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.SerialName

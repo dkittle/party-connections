@@ -1,9 +1,9 @@
 package ca.kittle.plugins
 
-import ca.kittle.party.createParty
-import ca.kittle.party.listParties
-import ca.kittle.party.showParty
-import ca.kittle.pc.createPlayerCharacter
+import ca.kittle.capabilities.party.createParty
+import ca.kittle.capabilities.party.listParties
+import ca.kittle.capabilities.party.showParty
+import ca.kittle.capabilities.pc.createPlayerCharacter
 import ca.kittle.web.index
 import com.mongodb.client.MongoDatabase
 import io.ktor.http.HttpStatusCode

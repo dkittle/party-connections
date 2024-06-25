@@ -42,20 +42,6 @@ services:
     networks:
       - party-connections-docker
 
-#  ollamasetup:
-#    image: ollama/ollama:latest
-#    depends_on:
-#      - ollama
-#    restart: "no"
-#    entrypoint: "sh -c 'sleep 10  && ollama run llama3'"
-
-#  ollamarun:
-#    image: ollama/ollama:latest
-#    depends_on:
-#      - ollama
-#    restart: "no"
-#    entrypoint: [ "sleep", "10"]
-
 volumes:
   mongo_data:
   mongo_config:

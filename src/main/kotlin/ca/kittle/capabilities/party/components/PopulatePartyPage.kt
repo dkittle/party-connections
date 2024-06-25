@@ -1,9 +1,9 @@
-package ca.kittle.party.components
+package ca.kittle.capabilities.party.components
 
-import ca.kittle.party.models.Party
-import ca.kittle.pc.components.createCharacterForm
-import ca.kittle.pc.components.listPlayerCharacters
-import ca.kittle.pc.models.PlayerCharacter
+import ca.kittle.capabilities.party.models.Party
+import ca.kittle.capabilities.pc.components.createCharacterForm
+import ca.kittle.capabilities.pc.components.listPlayerCharacters
+import ca.kittle.capabilities.pc.models.PlayerCharacter
 import ca.kittle.web.*
 import kotlinx.html.*
 

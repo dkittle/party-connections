@@ -1,6 +1,6 @@
-package ca.kittle.pc.components
+package ca.kittle.capabilities.pc.components
 
-import ca.kittle.pc.models.PlayerCharacter
+import ca.kittle.capabilities.pc.models.PlayerCharacter
 import ca.kittle.web.ITEM_GRID_STYLE
 import ca.kittle.web.ROUNDED_BOX
 import ca.kittle.web.UNORDERED_LIST_STYLE
