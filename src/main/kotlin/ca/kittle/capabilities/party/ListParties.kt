@@ -14,8 +14,7 @@ import mu.KotlinLogging
 
 private val logger = KotlinLogging.logger {}
 
-context(MongoDatabase)
-fun Routing.listParties() {
+context(MongoDatabase) fun Routing.listParties() {
     get("/parties") {
         val parties = getParties().getOrThrow()
         call.respondHtml {
@@ -26,8 +25,7 @@ fun Routing.listParties() {
     }
 }
 
-context(MongoDatabase)
-suspend fun getParties(): Result<List<Party>> =
+context(MongoDatabase) suspend fun getParties(): Result<List<Party>> =
     withContext(Dispatchers.IO) {
         runCatching {
             val collection = this@MongoDatabase.getCollection(PartyEntity.COLLECTION_NAME)

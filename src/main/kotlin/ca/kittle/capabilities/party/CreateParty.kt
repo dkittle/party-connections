@@ -16,8 +16,10 @@ import mu.KotlinLogging
 
 private val logger = KotlinLogging.logger {}
 
-context(MongoDatabase)
-fun Routing.createParty() {
+/**
+ * Route to create a new Party
+ */
+context(MongoDatabase) fun Routing.createParty() {
     post("/party") {
         val party: Party = call.receive()
         val id = createParty(party).getOrThrow()
@@ -25,16 +27,15 @@ fun Routing.createParty() {
     }
 }
 
-context(MongoDatabase)
-suspend fun createParty(party: Party): Result<String> =
+context(MongoDatabase) suspend fun createParty(party: Party): Result<String> =
     withContext(Dispatchers.IO) {
         runCatching {
             val collection = this@MongoDatabase.getCollection(PartyEntity.COLLECTION_NAME)
             collection.find(Filters.eq(Party::name.name, party.name)).first()
-                ?.let(PartyEntity::fromDocument)?.id
+                ?.let(PartyEntity::fromDocument)?.id?.value
                 ?: run {
                     collection.insertOne(party.toDocument())
-                    party.id
+                    party.id.value
                 }
         }.onFailure {
             logger.error("Error creating party", it)

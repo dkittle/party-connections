@@ -6,8 +6,8 @@ import kotlinx.serialization.Serializable
 import java.util.UUID
 
 @Serializable
-data class PlayerCharacter(
-    val name: String,
+class PlayerCharacter private constructor(
+    val name: Name,
     val ancestry: String,
     val baseClass: String,
     val role: String,
@@ -17,3 +17,25 @@ data class PlayerCharacter(
     @Contextual @SerialName("_id")
     val id: String = UUID.randomUUID().toString(),
 )
+
+
+@Serializable
+@JvmInline
+value class Name(val value: String) {
+    init {
+        require(value.isNotBlank())
+    }
+}
+
+//@Serializable
+//@JvmInline
+//value class NonEmptyString(private val string: String) {
+//    init {
+//        require(string.isNotEmpty()) {
+//            "Full name cannot be empty"
+//        }
+//    }
+//    companion object {
+//        operator fun invoke(string: String, fieldName: String)
+//    }
+//}

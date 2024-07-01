@@ -11,7 +11,7 @@ fun FlowContent.listOfParties(parties: List<Party>) =
             li {
                 attributes["hx-get"] = "/party/${party.id}"
                 attributes["hx-target"] = "#page-content"
-                +party.name
+                +"${party.name}"
             }
         }
     }

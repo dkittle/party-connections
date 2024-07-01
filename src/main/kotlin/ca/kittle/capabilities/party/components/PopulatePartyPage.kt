@@ -13,7 +13,7 @@ fun FlowContent.populateParty(
 ) = div {
     partyHeader(party)
     listPlayerCharacters(pcs)
-    createCharacterForm(party.id)
+    createCharacterForm(party.id.value)
 }
 
 fun FlowContent.partyHeader(party: Party) =

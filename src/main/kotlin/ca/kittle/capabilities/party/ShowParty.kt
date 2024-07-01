@@ -14,21 +14,19 @@ import io.ktor.server.routing.Routing
 import io.ktor.server.routing.get
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import kotlinx.css.body
 import kotlinx.html.body
 import mu.KotlinLogging
 
 private val logger = KotlinLogging.logger {}
 
-context(MongoDatabase)
-fun Routing.showParty() {
+context(MongoDatabase) fun Routing.showParty() {
     get("/party/{id}") {
         val party =
             call.parameters["id"]?.let { id ->
                 getParty(id).getOrThrow()
             }
         party?.apply {
-            val pcs = getPlayerCharacters(id).getOrThrow()
+            val pcs = getPlayerCharacters(id.value).getOrThrow()
             call.respondHtml {
                 body {
                     populateParty(party, pcs)
@@ -39,8 +37,7 @@ fun Routing.showParty() {
     }
 }
 
-context(MongoDatabase)
-suspend fun getParty(id: String): Result<Party?> =
+context(MongoDatabase) suspend fun getParty(id: String): Result<Party?> =
     withContext(Dispatchers.IO) {
         runCatching {
             val collection = this@MongoDatabase.getCollection(PartyEntity.COLLECTION_NAME)
@@ -51,8 +48,7 @@ suspend fun getParty(id: String): Result<Party?> =
         logger.error("Error getting party", it)
     }
 
-context(MongoDatabase)
-suspend fun getPlayerCharacters(id: String): Result<List<PlayerCharacter>> =
+context(MongoDatabase) suspend fun getPlayerCharacters(id: String): Result<List<PlayerCharacter>> =
     withContext(Dispatchers.IO) {
         runCatching {
             val collection = this@MongoDatabase.getCollection(PlayerCharacterEntity.COLLECTION_NAME)

@@ -74,6 +74,8 @@ dependencies {
     implementation("io.ktor:ktor-server-netty-jvm")
     implementation("io.github.microutils:kotlin-logging-jvm:3.0.4")
     implementation("ch.qos.logback:logback-classic:$logback_version")
+    implementation(platform("dev.forkhandles:forkhandles-bom:2.18.0.1"))
+    implementation("dev.forkhandles:values4k")
     testImplementation("io.ktor:ktor-server-tests-jvm")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
 }
