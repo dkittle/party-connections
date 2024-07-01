@@ -8,11 +8,10 @@ import ca.kittle.web.*
 import kotlinx.html.*
 
 fun FlowContent.populateParty(
-    party: Party,
-    pcs: List<PlayerCharacter>,
+    party: Party
 ) = div {
     partyHeader(party)
-    listPlayerCharacters(pcs)
+    listPlayerCharacters(party.playerCharacters)
     createCharacterForm(party.id.value)
 }
 

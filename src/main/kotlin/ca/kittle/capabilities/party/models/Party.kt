@@ -11,7 +11,7 @@ import java.util.UUID
 @Serializable
 data class Party(
     val name: String,
-    val playerCharacters: List<PlayerCharacter>,
+    val playerCharacters: List<PlayerCharacter> = listOf(),
     @SerialName("_id")
     val id: PartyId = PartyId(),
 )

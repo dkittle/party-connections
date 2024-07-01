@@ -29,7 +29,7 @@ context(MongoDatabase) fun Routing.showParty() {
             val pcs = getPlayerCharacters(id.value).getOrThrow()
             call.respondHtml {
                 body {
-                    populateParty(party, pcs)
+                    populateParty(party.copy(playerCharacters = pcs))
                 }
             }
         }
