@@ -11,7 +11,7 @@ div {
         classes = FORM_STYLE
         attributes["hx-post"] = "/party"
         attributes["hx-target"] = "#page-content"
-        attributes["hx-target-errors"] = "#serious-error"
+        attributes["hx-target-error"] = "#serious-error"
         attributes["hx-ext"] = "json-enc"
         label {
             htmlFor = "name"
@@ -24,6 +24,7 @@ div {
             classes = TEXT_INPUT_STYLE
             placeholder = "Enter a party name"
             value = ""
+            required = true
             autoFocus = true
         }
         button {
