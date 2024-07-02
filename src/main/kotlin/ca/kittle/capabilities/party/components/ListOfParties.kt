@@ -9,9 +9,9 @@ fun FlowContent.listOfParties(parties: List<Party>) =
     ul {
         for (party in parties) {
             li {
-                attributes["hx-get"] = "/party/${party.id}"
+                attributes["hx-get"] = "/party/${party.id.value}"
                 attributes["hx-target"] = "#page-content"
-                +"${party.name}"
+                +party.name.value
             }
         }
     }

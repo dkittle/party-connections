@@ -17,16 +17,16 @@ fun FlowContent.listPlayerCharacters(pcs: List<PlayerCharacter>) =
                     classes = ITEM_GRID_STYLE
                     div {
                         classes = setOf("font-bold")
-                        +"${pc.name}"
+                        +pc.name.value
                     }
                     div {
-                        +pc.ancestry
+                        +pc.ancestry.value
                     }
                     div {
-                        +pc.baseClass
+                        +pc.baseClass.value
                     }
                     div {
-                        +pc.role
+                        +pc.role.value
                     }
                 }
             }

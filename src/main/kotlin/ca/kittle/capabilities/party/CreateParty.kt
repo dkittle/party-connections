@@ -31,7 +31,7 @@ context(MongoDatabase) suspend fun createParty(party: Party): Result<String> =
     withContext(Dispatchers.IO) {
         runCatching {
             val collection = this@MongoDatabase.getCollection(PartyEntity.COLLECTION_NAME)
-            collection.find(Filters.eq(Party::name.name, party.name)).first()
+            collection.find(Filters.eq(Party::name.name, party.name.value)).first()
                 ?.let(PartyEntity::fromDocument)?.id?.value
                 ?: run {
                     collection.insertOne(party.toDocument())

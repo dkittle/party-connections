@@ -28,7 +28,7 @@ context(MongoDatabase) suspend fun createPlayerCharacter(pc: PlayerCharacter): R
         runCatching {
             val collection = this@MongoDatabase.getCollection(PlayerCharacterEntity.COLLECTION_NAME)
             collection.insertOne(pc.toDocument())
-            pc.id
+            pc.id.value
         }.onFailure {
             logger.error("Error creating player character", it)
         }

@@ -1,9 +1,10 @@
 package ca.kittle.capabilities.pc.components
 
+import ca.kittle.capabilities.party.models.PartyId
 import ca.kittle.web.*
 import kotlinx.html.*
 
-fun FlowContent.createCharacterForm(partyId: String) =
+fun FlowContent.createCharacterForm(partyId: PartyId) =
     form {
         classes = FORM_STYLE + WIDTH_LARGE
         attributes["hx-post"] = "/character"
@@ -12,7 +13,7 @@ fun FlowContent.createCharacterForm(partyId: String) =
         input {
             type = InputType.hidden
             name = "partyId"
-            value = partyId
+            value = partyId.value
         }
         div {
             classes = FOUR_COLUMNS

@@ -25,11 +25,11 @@ fun Application.processPCUpdates() {
     applicationScope.launch {
         logger.info { "Starting player character update flow" }
         consumePlayerCharacterUpdates().flowOn(Dispatchers.IO).collect { pc ->
-            val backstory = pc.backstory
-            logger.info { "Summarizing ${pc.name}'s backstory" }
+            val backstory = pc.backstory.value
+            logger.info { "Summarizing ${pc.name.value}'s backstory" }
             val summary = generateBackstorySummary(backstory)
             logger.info { "Storing ${pc.name}'s backstory summary" }
-            storeBackstorySummary(summary, pc.id)
+            storeBackstorySummary(summary, pc.id.value)
         }
     }
 }
