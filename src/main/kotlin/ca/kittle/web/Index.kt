@@ -39,6 +39,7 @@ fun Routing.index() {
             }
             body {
                 classes = BODY_STYLE
+                attributes["hx-ext"] = "response-targets"
                 div {
                     id = "page-content"
                     createPartyForm()

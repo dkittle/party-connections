@@ -3,11 +3,13 @@ package ca.kittle.capabilities.party
 import ca.kittle.capabilities.party.models.Party
 import ca.kittle.db.models.PartyEntity
 import ca.kittle.db.models.toDocument
+import ca.kittle.plugins.StatusErrorMessage
 import com.mongodb.client.MongoDatabase
 import com.mongodb.client.model.Filters
+import io.ktor.http.*
 import io.ktor.server.application.call
 import io.ktor.server.request.receive
-import io.ktor.server.response.respondRedirect
+import io.ktor.server.response.*
 import io.ktor.server.routing.Routing
 import io.ktor.server.routing.post
 import kotlinx.coroutines.Dispatchers
@@ -21,9 +23,14 @@ private val logger = KotlinLogging.logger {}
  */
 context(MongoDatabase) fun Routing.createParty() {
     post("/party") {
-        val party: Party = call.receive()
-        val id = createParty(party).getOrThrow()
-        call.respondRedirect("/party/$id")
+        try {
+            val party: Party = call.receive()
+            val id = createParty(party).getOrThrow()
+            call.respondRedirect("/party/$id")
+        } catch (e: Exception) {
+            logger.error("Failed to create party", e)
+            call.respond(HttpStatusCode.BadRequest, StatusErrorMessage("Failed to create party"))
+        }
     }
 }
 
