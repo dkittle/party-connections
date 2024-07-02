@@ -5,11 +5,13 @@ import ca.kittle.capabilities.party.models.Party
 import ca.kittle.capabilities.pc.models.PlayerCharacter
 import ca.kittle.db.models.PartyEntity
 import ca.kittle.db.models.PlayerCharacterEntity
+import ca.kittle.plugins.StatusErrorMessage
 import com.mongodb.client.MongoDatabase
 import com.mongodb.client.model.Filters
+import io.ktor.http.*
 import io.ktor.server.application.call
 import io.ktor.server.html.respondHtml
-import io.ktor.server.response.respondText
+import io.ktor.server.response.*
 import io.ktor.server.routing.Routing
 import io.ktor.server.routing.get
 import kotlinx.coroutines.Dispatchers
@@ -21,22 +23,24 @@ private val logger = KotlinLogging.logger {}
 
 context(MongoDatabase) fun Routing.showParty() {
     get("/party/{id}") {
-        val party =
-            call.parameters["id"]?.let { id ->
+        try {
+            val party = call.parameters["id"]?.let { id ->
                 getParty(id).getOrThrow()
             }
-        party?.apply {
-            val pcs = getPlayerCharacters(id.value).getOrThrow()
-            call.respondHtml {
-                body {
-                    populateParty(party.copy(playerCharacters = pcs))
+            party?.apply {
+                val pcs = getPlayerCharacters(id.value).getOrThrow()
+                call.respondHtml {
+                    body {
+                        populateParty(party.copy(playerCharacters = pcs))
+                    }
                 }
-            }
+            } ?: call.respond(HttpStatusCode.NotFound, StatusErrorMessage("No party found with the given id"))
+        } catch (e: Exception) {
+            logger.error("Failed to retrieve party", e)
+            call.respond(HttpStatusCode.BadRequest, StatusErrorMessage("Failed to retrieve party"))
         }
-        call.respondText("No id value")
     }
 }
-
 context(MongoDatabase) suspend fun getParty(id: String): Result<Party?> =
     withContext(Dispatchers.IO) {
         runCatching {

@@ -11,7 +11,7 @@ div {
         classes = FORM_STYLE
         attributes["hx-post"] = "/party"
         attributes["hx-target"] = "#page-content"
-        attributes["hx-target-400"] = "#serious-error"
+        attributes["hx-target-errors"] = "#serious-error"
         attributes["hx-ext"] = "json-enc"
         label {
             htmlFor = "name"
