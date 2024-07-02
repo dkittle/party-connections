@@ -38,14 +38,15 @@ context(MongoDatabase) suspend fun createParty(party: Party): Result<String> =
     withContext(Dispatchers.IO) {
         runCatching {
             val collection = this@MongoDatabase.getCollection(PartyEntity.COLLECTION_NAME)
-            collection.find(Filters.eq(Party::name.name, party.name.value)).first()
-                ?.let(PartyEntity::fromDocument)?.id?.value
-                ?: run {
-                    collection.insertOne(party.toDocument())
-                    party.id.value
-                }
+            val existingParty = collection.find(Filters.eq(Party::name.name, party.name.value)).first()
+            if (existingParty != null) {
+                PartyEntity.fromDocument(existingParty).id.value
+            } else {
+                collection.insertOne(party.toDocument())
+                party.id.value
+            }
         }.onFailure {
-            logger.error("Error creating party", it)
+            logger.error("Error creating party: ${it.message}", it)
         }
     }
 
