@@ -24,7 +24,7 @@ data class PlayerCharacter(
 @Serializable
 value class Name(val value: String) {
     init {
-        require(value.isNotBlank())
+        require(value.isNotBlank()) { "Name cannot be blank" }
     }
 }
 
@@ -32,7 +32,7 @@ value class Name(val value: String) {
 @Serializable
 value class Ancestry(val value: String) {
     init {
-        require(value.isNotBlank())
+        require(value.isNotBlank()) { "Ancestry cannot be blank" }
     }
 }
 
@@ -40,7 +40,7 @@ value class Ancestry(val value: String) {
 @Serializable
 value class BaseClass(val value: String) {
     init {
-        require(value.isNotBlank())
+        require(value.isNotBlank()) { "Base class cannot be blank" }
     }
 }
 
@@ -48,7 +48,7 @@ value class BaseClass(val value: String) {
 @Serializable
 value class PartyRole(val value: String) {
     init {
-        require(value.isNotBlank())
+        require(value.isNotBlank()) { "Party role cannot be blank" }
     }
 }
 
@@ -56,7 +56,7 @@ value class PartyRole(val value: String) {
 @Serializable
 value class Background(val value: String) {
     init {
-        require(value.isNotBlank())
+        require(value.isNotBlank()) { "Background cannot be blank" }
     }
 }
 
@@ -64,10 +64,9 @@ value class Background(val value: String) {
 @Serializable
 value class Backstory(val value: String) {
     init {
-        require(value.isNotBlank())
+        require(value.isNotBlank()) { "Backstory cannot be blank" }
     }
 }
-
 
 @JvmInline
 @Serializable
