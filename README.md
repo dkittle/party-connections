@@ -26,7 +26,7 @@ The `web` package contains the `index` route and HTML elements along with a Styl
 
 Looking at the route and service functions for each capability, the route is structured using a `try/catch` with any errors being returned as an error message and either a `404` when data is not found in Mongo or a HTTP status `400` error for exceptions.
 
-Service functions are wrapped in a `runCatching` and log exceptions in an `onFailure` block. `Result` objects are returned from service functions holding either data or the exception that occurred. 
+Service functions are wrapped in a `runCatching` and log exceptions in an `onFailure` block. `Result` objects are returned from service functions holding either data or the exception that occurred.
 
 TODO currently the connection to Ollama is done within an `Application` function in the plugins package and this needs to be moved elsewhere.
 
