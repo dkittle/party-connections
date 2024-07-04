@@ -16,7 +16,7 @@ The application uses [Tailwind CSS](https://tailwindcss.com/) for styling.
 
 The application structure is a foray into Vertical Slice Architecture, where each capability (feature) is a separate package with one Kotlin source file for each capability (create a party of characters, generate shared connections, etc.).
 
-Within each capability source file will be the route for the capability along with the "service" and repository functions needed to facilitate the capability. Models used by the service functions are meant to represent DDD entities and are stored in a `models` package under the `capability` package. Entity helpers (with the MongoDB collection name and helper functions to convert Kotlin data classes to and from Mongo Documents) are store outside the `capabilities` package, in a top level `db` package.
+Within each capability source file, there will be the route for the capability, along with the "service" and repository functions needed to facilitate the capability. Models used by the service functions are meant to represent DDD entities and are stored in a `models` package under the `capability` package. Entity helpers (with the MongoDB collection name and helper functions to convert Kotlin data classes to and from Mongo Documents) are stored outside the `capabilities` package, in a top-level `db` package.
 
 The `plugins` package configures various aspects of the application, including the HTTP Server, MongoDB connection, and the HTTP Client that interacts with Ollama.
 
