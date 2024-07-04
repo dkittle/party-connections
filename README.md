@@ -18,7 +18,7 @@ The application structure is a foray into Vertical Slice Architecture, where eac
 
 Within each capability source file will be the route for the capability along with the "service" and repository functions needed to facilitate the capability. Models used by the service functions are meant to represent DDD entities and are stored in a `models` package under the `capability` package. Entity helpers (with the MongoDB collection name and helper functions to convert Kotlin data classes to and from Mongo Documents) are store outside the `capabilities` package, in a top level `db` package.
 
-The `plugins` package configures various aspects of the application including the HTTP Server, MongoDB connection, and the HTTP Client that interacts with Ollama.
+The `plugins` package configures various aspects of the application, including the HTTP Server, MongoDB connection, and the HTTP Client that interacts with Ollama.
 
 The `web` package contains the `index` route and HTML elements along with a Styles CSS file that offers sets of Tailwind CSS classes for components.
 
