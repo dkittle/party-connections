@@ -3,6 +3,7 @@ package ca.kittle.plugins
 import ca.kittle.capabilities.party.createParty
 import ca.kittle.capabilities.party.listParties
 import ca.kittle.capabilities.party.showParty
+import ca.kittle.capabilities.party.showPartyMembers
 import ca.kittle.capabilities.pc.createPlayerCharacter
 import ca.kittle.web.index
 import com.mongodb.client.MongoDatabase
@@ -31,6 +32,7 @@ fun Application.configureRouting() {
         createParty()
         showParty()
         listParties()
+        showPartyMembers()
         // Character pages
         createPlayerCharacter()
     }

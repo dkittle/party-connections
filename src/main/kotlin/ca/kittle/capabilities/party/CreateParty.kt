@@ -28,7 +28,6 @@ context(MongoDatabase) fun Routing.createParty() {
             val id = createParty(party).getOrThrow()
             call.respondRedirect("/party/$id")
         } catch (e: Exception) {
-            logger.error("Failed to create party", e)
             call.respond(HttpStatusCode.BadRequest, StatusErrorMessage("Failed to create party"))
         }
     }

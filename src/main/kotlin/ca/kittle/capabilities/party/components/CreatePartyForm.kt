@@ -41,4 +41,8 @@ fun FlowContent.errorArea() =
         classes = setOf("invisible", "bg-red-100", "border", "border-red-400", "text-red-700", "px-4", "py-3",
             "rounded", "relative", "has-[div]:visible")
         id = "serious-error"
+        svg {
+            classes = setOf("fill-current", "w-4", "h-4", "mr-2")
+
+        }
     }

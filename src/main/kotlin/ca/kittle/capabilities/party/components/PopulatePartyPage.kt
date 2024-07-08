@@ -2,7 +2,6 @@ package ca.kittle.capabilities.party.components
 
 import ca.kittle.capabilities.party.models.Party
 import ca.kittle.capabilities.pc.components.createCharacterForm
-import ca.kittle.capabilities.pc.components.listPlayerCharacters
 import ca.kittle.web.TITLE_STYLE
 import ca.kittle.web.WIDTH_LARGE
 import kotlinx.html.FlowContent
@@ -14,7 +13,7 @@ fun FlowContent.populateParty(
     party: Party
 ) = div {
     partyHeader(party)
-    listPlayerCharacters(party.playerCharacters)
+    listPartyMembers(party.id, party.partyMembers)
     createCharacterForm(party.id)
 }
 

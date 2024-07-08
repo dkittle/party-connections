@@ -19,7 +19,7 @@ context(MongoDatabase) fun Routing.createPlayerCharacter() {
     post("/character") {
         val pc: PlayerCharacter = call.receive()
         createPlayerCharacter(pc)
-        call.respondRedirect("/party/${pc.partyId}")
+        call.respondRedirect("/party/${pc.partyId.value}")
     }
 }
 
