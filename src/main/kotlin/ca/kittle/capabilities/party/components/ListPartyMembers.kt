@@ -45,7 +45,7 @@ fun FlowContent.listPartyMembers(partyId: PartyId, pcs: List<PartyMember>) =
             }
         }
         /**
-         * We need at least two party members and need all of them to
+         * A party must have at least two party members and need all of them to
          * have summarized backstories to generate connections.
          */
         val partyReadyForConnections =
