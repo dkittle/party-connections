@@ -2,6 +2,7 @@ package ca.kittle.capabilities.party.components
 
 import ca.kittle.capabilities.party.models.PartyId
 import ca.kittle.capabilities.party.models.PartyMember
+import ca.kittle.web.BUTTON_STYLE
 import ca.kittle.web.ITEM_GRID_STYLE
 import ca.kittle.web.ROUNDED_BOX
 import ca.kittle.web.UNORDERED_LIST_STYLE
@@ -41,6 +42,22 @@ fun FlowContent.listPartyMembers(partyId: PartyId, pcs: List<PartyMember>) =
                         +summary
                     }
                 }
+            }
+        }
+        /**
+         * We need at least two party members and need all of them to
+         * have summarized backstories to generate connections.
+         */
+        val partyReadyForConnections =
+            pcs.size >= 2 &&
+                    pcs.filter { it.backstorySummary == null }.isEmpty()
+        if (partyReadyForConnections) {
+            button {
+                classes = BUTTON_STYLE
+                attributes["hx-post"] = "/connections"
+                attributes["hx-target"] = "#page-content"
+                type = ButtonType.button
+                +"Build party connections"
             }
         }
     }
