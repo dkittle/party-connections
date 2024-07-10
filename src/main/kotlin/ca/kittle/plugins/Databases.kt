@@ -1,11 +1,14 @@
 package ca.kittle.plugins
 
+import com.mongodb.ConnectionString
+import com.mongodb.MongoClientSettings
 import com.mongodb.client.MongoClients
 import com.mongodb.client.MongoDatabase
 import io.ktor.server.application.Application
 import io.ktor.server.application.ApplicationStopped
 import io.ktor.server.config.tryGetString
 import mu.KotlinLogging
+import java.util.concurrent.TimeUnit
 
 private val logger = KotlinLogging.logger {}
 
@@ -39,9 +42,20 @@ fun Application.connectToMongoDB(): MongoDatabase {
     val databaseName = environment.config.tryGetString("db.mongo.database.name") ?: "PartyConnections"
 
     val credentials = user.let { userVal -> password?.let { passwordVal -> "$userVal:$passwordVal@" } }.orEmpty()
-    val uri = "mongodb://$credentials$host:$port/?replicaSet=rs0&maxPoolSize=$maxPoolSize&w=majority"
+    val uri = "mongodb://$credentials$host:$port/?replicaSet=rs0&maxPoolSize=$maxPoolSize&w=majority&connectTimeoutMS=1500"
 
-    val mongoClient = MongoClients.create(uri)
+//    val mongoClient = MongoClients.create(uri)
+    val mongoClient = MongoClients.create(
+        MongoClientSettings.builder()
+            .applyConnectionString(ConnectionString(uri))
+            .applyToSocketSettings { builder ->
+                builder
+                    .connectTimeout(1, TimeUnit.SECONDS)
+                    .readTimeout(15, TimeUnit.SECONDS)
+            }
+            .applyToClusterSettings { it.serverSelectionTimeout(1, TimeUnit.SECONDS) }
+            .build()
+    )
     val mongoConnection = mongoClient.getDatabase(databaseName)
 
     logger.info { "Creating application stopped shutdown hook to close Mongo connection" }

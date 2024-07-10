@@ -26,6 +26,9 @@ fun Routing.index() {
                 script {
                     src = "static/json-enc.js"
                 }
+                script {
+                    src = "static/response-targets.js"
+                }
                 meta {
                     name = "viewport"
                     content = "width=device-width, initial-scale=1.0"
@@ -36,6 +39,7 @@ fun Routing.index() {
             }
             body {
                 classes = BODY_STYLE
+                attributes["hx-ext"] = "response-targets"
                 div {
                     id = "page-content"
                     createPartyForm()

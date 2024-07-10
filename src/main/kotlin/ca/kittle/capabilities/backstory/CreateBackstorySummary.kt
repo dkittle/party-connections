@@ -62,7 +62,7 @@ suspend fun consumePlayerCharacterUpdates(): Flow<PlayerCharacter> =
                         "${event.operationType.name}${if (event.operationType.name.endsWith("e")) "d" else "ed"}"
                             .lowercase()
                     val pc = PlayerCharacterEntity.fromDocument(doc)
-                    logger.info { "${pc.name} $operation" }
+                    logger.info { "${pc.name.value} $operation" }
                     emit(pc)
                 }
             }

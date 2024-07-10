@@ -3,15 +3,20 @@ package ca.kittle.plugins
 import ca.kittle.capabilities.party.createParty
 import ca.kittle.capabilities.party.listParties
 import ca.kittle.capabilities.party.showParty
+import ca.kittle.capabilities.party.showPartyMembers
 import ca.kittle.capabilities.pc.createPlayerCharacter
 import ca.kittle.web.index
 import com.mongodb.client.MongoDatabase
-import io.ktor.http.HttpStatusCode
-import io.ktor.server.application.Application
-import io.ktor.server.application.install
-import io.ktor.server.plugins.statuspages.StatusPages
-import io.ktor.server.response.respondText
-import io.ktor.server.routing.routing
+import io.ktor.http.*
+import io.ktor.server.application.*
+import io.ktor.server.plugins.statuspages.*
+import io.ktor.server.response.*
+import io.ktor.server.routing.*
+
+
+object StatusErrorMessage {
+    operator fun invoke(message: String) = "<div>$message</div>"
+}
 
 context(MongoDatabase)
 fun Application.configureRouting() {
@@ -27,6 +32,7 @@ fun Application.configureRouting() {
         createParty()
         showParty()
         listParties()
+        showPartyMembers()
         // Character pages
         createPlayerCharacter()
     }

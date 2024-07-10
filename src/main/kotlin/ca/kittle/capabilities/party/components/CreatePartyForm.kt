@@ -6,10 +6,12 @@ import ca.kittle.web.TEXT_INPUT_STYLE
 import kotlinx.html.*
 
 fun FlowContent.createPartyForm() =
+div {
     form {
         classes = FORM_STYLE
         attributes["hx-post"] = "/party"
         attributes["hx-target"] = "#page-content"
+        attributes["hx-target-error"] = "#serious-error"
         attributes["hx-ext"] = "json-enc"
         label {
             htmlFor = "name"
@@ -22,11 +24,25 @@ fun FlowContent.createPartyForm() =
             classes = TEXT_INPUT_STYLE
             placeholder = "Enter a party name"
             value = ""
+            required = true
             autoFocus = true
         }
         button {
             classes = BUTTON_STYLE
             type = ButtonType.submit
             +"Create Party"
+        }
+    }
+    errorArea()
+}
+
+fun FlowContent.errorArea() =
+    div {
+        classes = setOf("invisible", "bg-red-100", "border", "border-red-400", "text-red-700", "px-4", "py-3",
+            "rounded", "relative", "has-[div]:visible")
+        id = "serious-error"
+        svg {
+            classes = setOf("fill-current", "w-4", "h-4", "mr-2")
+
         }
     }

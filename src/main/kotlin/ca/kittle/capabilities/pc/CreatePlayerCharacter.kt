@@ -15,23 +15,26 @@ import mu.KotlinLogging
 
 private val logger = KotlinLogging.logger {}
 
-context(MongoDatabase)
-fun Routing.createPlayerCharacter() {
+context(MongoDatabase) fun Routing.createPlayerCharacter() {
     post("/character") {
         val pc: PlayerCharacter = call.receive()
         createPlayerCharacter(pc)
-        call.respondRedirect("/party/${pc.partyId}")
+        call.respondRedirect("/party/${pc.partyId.value}")
     }
 }
 
-context(MongoDatabase)
-suspend fun createPlayerCharacter(pc: PlayerCharacter): Result<String> =
+context(MongoDatabase) suspend fun createPlayerCharacter(pc: PlayerCharacter): Result<String> =
     withContext(Dispatchers.IO) {
         runCatching {
             val collection = this@MongoDatabase.getCollection(PlayerCharacterEntity.COLLECTION_NAME)
             collection.insertOne(pc.toDocument())
-            pc.id
+            pc.id.value
         }.onFailure {
             logger.error("Error creating player character", it)
         }
     }
+
+//context(IDatabase)
+//object CreatePlayerCharacterUseCase {
+//    suspend operator fun invoke(pc: PlayerCharacter): Result<String> =
+//}
