@@ -24,7 +24,7 @@ private val logger = KotlinLogging.logger {}
 context(MongoDatabase) fun Routing.listParties() {
     get("/parties") {
         try {
-            val parties = GetPartiesUseCase()
+            val parties = getParties().getOrThrow()
             call.respondHtml {
                 body {
                     listOfParties(parties)
@@ -34,25 +34,6 @@ context(MongoDatabase) fun Routing.listParties() {
             call.respond(HttpStatusCode.BadRequest, StatusErrorMessage("Failed to load parties"))
         }
     }
-}
-
-/**
- * Get Parties Use-Case
- * Validation:
- * none
- * Action:
- * Get all parties from the database
- * Response:
- * A list of all parties
- */
-object GetPartiesUseCase {
-    context(MongoDatabase) suspend operator fun invoke(): List<Party> =
-        executeUseCase {
-            // Action
-            val parties = getParties().getOrThrow()
-            // Build response
-            useCaseResponse { parties }
-        }
 }
 
 

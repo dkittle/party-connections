@@ -32,7 +32,7 @@ The `web` package contains the `index` route and HTML elements along with a Styl
 
 Looking at the route and service functions for each capability, the route is structured using a `try/catch` with any errors being returned as an error message and either a `404` when data is not found in Mongo or an HTTP status `400` error for exceptions.
 
-Routes call a use case that does all data retrieval and/or manipulation. The `UseCase` uses an object's invoke operator so it's execution resembles a class instantiation. The use case runs either in a supervisor scope (using `executeUseCase {}`) or in a coroutine scope, depending on whether a coroutine exception should cancel child coroutines or not. Async calls to service functions can be async with an `awaitResult()` and `.map` then used to create a response from the UseCase. UseCases return a `Result` object so exceptiuons can be properly acted on by the `Route`.
+Routes call a use case that does all data retrieval and/or manipulation. The `UseCase` uses an object's invoke operator, so it's execution resembles a class instantiation. The use case should be run using `executeUseCase {}` to cancel any `LAZY` coroutine starts (ie, `async(start = CoroutineStart.LAZY)`) that have not been started. Async calls to service functions can be async with an `awaitResult()` and `.map` then used to create a response from the UseCase. UseCases return a `Result` object so exceptiuons can be properly acted on by the `Route`.
 
 Service functions are wrapped in a `runCatching` and log exceptions in an `onFailure` block. `Result` objects are returned from service functions holding either data or the exception that occurred.
 

@@ -4,8 +4,6 @@ import ca.kittle.capabilities.party.models.Party
 import ca.kittle.db.models.PartyEntity
 import ca.kittle.db.models.toDocument
 import ca.kittle.plugins.StatusErrorMessage
-import ca.kittle.util.executeUseCase
-import ca.kittle.util.useCaseResponse
 import com.mongodb.client.MongoDatabase
 import com.mongodb.client.model.Filters
 import io.ktor.http.*
@@ -25,7 +23,7 @@ private val logger = KotlinLogging.logger {}
 context(MongoDatabase) fun Routing.createParty() {
     post("/party") {
         try {
-            val id = CreatePartyUseCase(party = call.receive())
+            val id = CreatePartyUseCase(party = call.receive()).getOrThrow()
             call.respondRedirect("/party/$id")
         } catch (e: IllegalArgumentException) {
             call.respond(HttpStatusCode.BadRequest, StatusErrorMessage(e.message.orEmpty()))
@@ -46,15 +44,14 @@ context(MongoDatabase) fun Routing.createParty() {
  * The id of the existing or new party
  */
 object CreatePartyUseCase {
-    context(MongoDatabase) suspend operator fun invoke(party: Party): String =
-        executeUseCase {
-            // Validate
-            require(party.name.value.isNotBlank()) { "Party name cannot be blank" }
-            // Action
-            val newParty = createParty(party).getOrThrow()
-            // Build response
-            useCaseResponse { newParty.id.value }
-        }
+    context(MongoDatabase) suspend operator fun invoke(party: Party): Result<String> {
+        // Validate
+        require(party.name.value.isNotBlank()) { "Party name cannot be blank" }
+        // Action
+        val newParty = createParty(party).getOrThrow()
+        // Build response
+        return Result.success(newParty.id.value)
+    }
 }
 
 context(MongoDatabase) suspend fun createParty(party: Party): Result<Party> =

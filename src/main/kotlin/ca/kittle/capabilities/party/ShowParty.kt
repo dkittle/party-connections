@@ -40,7 +40,7 @@ context(MongoDatabase) fun Routing.showParty() {
                         populateParty(party)
                     }
                 }
-            } ?: call.respond(HttpStatusCode.NotFound, StatusErrorMessage("No party found with the given id"))
+            } ?: call.respond(HttpStatusCode.NotFound, StatusErrorMessage("No party found with the provided id"))
         } catch (e: Exception) {
             call.respond(HttpStatusCode.BadRequest, StatusErrorMessage("Failed to retrieve party and party members"))
         }
@@ -58,22 +58,23 @@ context(MongoDatabase) fun Routing.showParty() {
  */
 object GetPartyAndPartyMembersUseCase {
     context(MongoDatabase) @OptIn(ExperimentalCoroutinesApi::class)
-    suspend operator fun invoke(id: String?): Result<Party?> =
-        executeUseCase {
+    suspend operator fun invoke(id: String?): Result<Party?> {
             // Validate
             val partyId = UUID.fromString(id ?: "")
             // Action
-            coroutineScope {
-                val party = async(start = CoroutineStart.LAZY) {
+            return coroutineScope {
+                val party = async {
                     getParty(partyId.toString()).getOrThrow()
                 }
-                val partyMembers = async(start = CoroutineStart.LAZY) {
+                val partyMembers = async {
                     getPartyMembers(partyId.toString()).getOrThrow()
                 }
                 // Build response
                 party.awaitResult().mapCatching {
                     it?.copy(partyMembers = partyMembers.awaitResult().getOrDefault(listOf()))
                 }
+            }.onFailure {
+                logger.error(it) { "Failed to get party members $it" }
             }
         }
 }

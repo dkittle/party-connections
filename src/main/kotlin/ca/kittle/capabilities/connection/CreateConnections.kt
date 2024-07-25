@@ -1,6 +1,5 @@
 package ca.kittle.capabilities.connection
 
-import ca.kittle.capabilities.party.components.populateParty
 import ca.kittle.plugins.StatusErrorMessage
 import com.mongodb.client.MongoDatabase
 import io.ktor.http.*
@@ -28,7 +27,6 @@ context(MongoDatabase) fun Routing.createConnections() {
         }
     }
 }
-
 
 
 private val SUMMARY_PROMPT =
