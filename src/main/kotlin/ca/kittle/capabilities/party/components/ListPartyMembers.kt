@@ -54,7 +54,7 @@ fun FlowContent.listPartyMembers(partyId: PartyId, pcs: List<PartyMember>) =
         if (partyReadyForConnections) {
             button {
                 classes = BUTTON_STYLE
-                attributes["hx-post"] = "/connections"
+                attributes["hx-post"] = "/party/${partyId.value}/connections"
                 attributes["hx-target"] = "#page-content"
                 type = ButtonType.button
                 +"Build party connections"

@@ -16,15 +16,23 @@ The application uses [Tailwind CSS](https://tailwindcss.com/) for styling.
 
 The application structure is a foray into Vertical Slice Architecture, where each capability (feature) is a separate package with one Kotlin source file for each capability (create a party of characters, generate shared connections, etc.).
 
+### Code Organization
+
+#### Vertical Slices
+
 Within each capability source file, there will be the route for the capability, along with the "service" and repository functions needed to facilitate the capability. Models used by the service functions are meant to represent DDD entities and are stored in a `models` package under the `capability` package. Entity helpers (with the MongoDB collection name and helper functions to convert Kotlin data classes to and from Mongo Documents) are stored outside the `capabilities` package, in a top-level `db` package.
 
+#### ktor
 The `plugins` package configures various aspects of the application, including the HTTP Server, MongoDB connection, and the HTTP Client that interacts with Ollama.
 
+#### Web app index page
 The `web` package contains the `index` route and HTML elements along with a Styles CSS file that offers sets of Tailwind CSS classes for components.
 
 ## Code Structure
 
 Looking at the route and service functions for each capability, the route is structured using a `try/catch` with any errors being returned as an error message and either a `404` when data is not found in Mongo or an HTTP status `400` error for exceptions.
+
+Routes call a use case that does all data retrieval and/or manipulation. The `UseCase` uses an object's invoke operator so it's execution resembles a class instantiation. The use case runs either in a supervisor scope (using `executeUseCase {}`) or in a coroutine scope, depending on whether a coroutine exception should cancel child coroutines or not. Async calls to service functions can be async with an `awaitResult()` and `.map` then used to create a response from the UseCase. UseCases return a `Result` object so exceptiuons can be properly acted on by the `Route`.
 
 Service functions are wrapped in a `runCatching` and log exceptions in an `onFailure` block. `Result` objects are returned from service functions holding either data or the exception that occurred.
 

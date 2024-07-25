@@ -8,6 +8,8 @@ import ca.kittle.db.models.PartyEntity
 import ca.kittle.db.models.PartyMemberEntity
 import ca.kittle.db.models.PlayerCharacterEntity
 import ca.kittle.plugins.StatusErrorMessage
+import ca.kittle.util.awaitResult
+import ca.kittle.util.executeUseCase
 import com.mongodb.client.MongoDatabase
 import com.mongodb.client.model.Aggregates
 import com.mongodb.client.model.Filters
@@ -17,21 +19,21 @@ import io.ktor.server.application.*
 import io.ktor.server.html.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import kotlinx.html.body
 import mu.KotlinLogging
 import org.bson.Document
 import org.bson.conversions.Bson
+import java.util.*
 
 private val logger = KotlinLogging.logger {}
 
 context(MongoDatabase) fun Routing.showParty() {
     get("/party/{id}") {
         try {
-            val party = call.parameters["id"]?.let { id ->
-                getPartyAndMembers(id).getOrThrow()
-            }
+            val party =
+                GetPartyAndPartyMembersUseCase(call.parameters["id"])
+                    .getOrThrow()
             party?.apply {
                 call.respondHtml {
                     body {
@@ -45,14 +47,36 @@ context(MongoDatabase) fun Routing.showParty() {
     }
 }
 
-context(MongoDatabase) suspend fun getPartyAndMembers(id: String): Result<Party?> =
-    runCatching {
-        val party = getParty(id).getOrThrow()
-        party?.let {
-            val members = getPartyMembers(id).getOrThrow()
-            party.copy(partyMembers = members)
+/**
+ * Retrieve Party and Party Members Use-Case
+ * Validation:
+ * A UUID representing the party to retrieve
+ * Action:
+ * Load both the party and all party members in the party in parallel
+ * Response:
+ * The party including all party members
+ */
+object GetPartyAndPartyMembersUseCase {
+    context(MongoDatabase) @OptIn(ExperimentalCoroutinesApi::class)
+    suspend operator fun invoke(id: String?): Result<Party?> =
+        executeUseCase {
+            // Validate
+            val partyId = UUID.fromString(id ?: "")
+            // Action
+            coroutineScope {
+                val party = async(start = CoroutineStart.LAZY) {
+                    getParty(partyId.toString()).getOrThrow()
+                }
+                val partyMembers = async(start = CoroutineStart.LAZY) {
+                    getPartyMembers(partyId.toString()).getOrThrow()
+                }
+                // Build response
+                party.awaitResult().mapCatching {
+                    it?.copy(partyMembers = partyMembers.awaitResult().getOrDefault(listOf()))
+                }
+            }
         }
-    }
+}
 
 context(MongoDatabase) suspend fun getParty(id: String): Result<Party?> =
     withContext(Dispatchers.IO) {

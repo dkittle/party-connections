@@ -8,6 +8,7 @@ import ca.kittle.db.models.toDocument
 import ca.kittle.plugins.GenerateRequest
 import ca.kittle.plugins.GenerateResponse
 import ca.kittle.plugins.LlmConnection
+import ca.kittle.util.QUOTES
 import ca.kittle.util.json
 import com.mongodb.client.MongoDatabase
 import com.mongodb.client.model.Aggregates
@@ -29,10 +30,10 @@ import mu.KotlinLogging
 
 private val logger = KotlinLogging.logger {}
 
-private const val QUOTES = "\"\"\""
 private val SUMMARY_PROMPT =
     """Please summarize this dungeons and dragons character backstory in bullet
-    point form. Do not leave out any important points.
+    point form. Do not leave out any important points. Return your response as a 
+    list of bullet points without any explanation.
     """.trimMargin().plus("\n")
 
 /**

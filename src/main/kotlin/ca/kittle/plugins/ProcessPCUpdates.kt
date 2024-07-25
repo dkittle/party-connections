@@ -28,7 +28,7 @@ fun Application.processPCUpdates() {
             val backstory = pc.backstory.value
             logger.info { "Summarizing ${pc.name.value}'s backstory" }
             val summary = generateBackstorySummary(backstory)
-            logger.info { "Storing ${pc.name}'s backstory summary" }
+            logger.info { "Storing ${pc.name.value}'s backstory summary" }
             storeBackstorySummary(summary, pc.id.value)
         }
     }
