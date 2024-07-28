@@ -47,3 +47,12 @@ suspend fun <T> Deferred<T>.awaitResult(): Result<T> {
 @ExperimentalCoroutinesApi
 suspend fun <T : Any> Deferred<T>.awaitOrNull(): T? =
     awaitResult().getOrNull()
+
+object Maybe {
+    suspend operator fun <T> invoke(block: suspend () -> T): Result<T> =
+        try {
+            Result.success(block())
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }

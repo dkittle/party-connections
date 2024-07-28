@@ -8,6 +8,7 @@ import ca.kittle.db.models.PartyEntity
 import ca.kittle.db.models.PartyMemberEntity
 import ca.kittle.db.models.PlayerCharacterEntity
 import ca.kittle.plugins.StatusErrorMessage
+import ca.kittle.util.Maybe
 import ca.kittle.util.awaitResult
 import ca.kittle.util.executeUseCase
 import com.mongodb.client.MongoDatabase
@@ -32,8 +33,7 @@ context(MongoDatabase) fun Routing.showParty() {
     get("/party/{id}") {
         try {
             val party =
-                GetPartyAndPartyMembersUseCase(call.parameters["id"])
-                    .getOrThrow()
+                GetPartyAndPartyMembersUseCase(call.parameters["id"]).getOrThrow()
             party?.apply {
                 call.respondHtml {
                     body {
@@ -60,7 +60,7 @@ object GetPartyAndPartyMembersUseCase {
     context(MongoDatabase) @OptIn(ExperimentalCoroutinesApi::class)
     suspend operator fun invoke(id: String?): Result<Party?> {
             // Validate
-            val partyId = UUID.fromString(id ?: "")
+            val partyId = Maybe { UUID.fromString(id ?: "") }.getOrThrow()
             // Action
             return coroutineScope {
                 val party = async {
