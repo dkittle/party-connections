@@ -1,7 +1,7 @@
 package ca.kittle.util
 
-@JvmInline
-value class ValidationError(val message: String)
+
+class ValidationError(override val message: String) : Throwable()
 
 typealias Errors = List<ValidationError>
 

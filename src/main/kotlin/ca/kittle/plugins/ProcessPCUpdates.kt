@@ -1,7 +1,8 @@
 package ca.kittle.plugins
 
-import ca.kittle.capabilities.backstory.consumePlayerCharacterUpdates
+import ca.kittle.capabilities.backstory.subscribeToPlayerCharacterChanges
 import ca.kittle.capabilities.backstory.generateBackstorySummary
+import ca.kittle.capabilities.backstory.processPlayerCharacterOperations
 import ca.kittle.capabilities.backstory.storeBackstorySummary
 import com.mongodb.client.MongoDatabase
 import io.ktor.server.application.Application
@@ -20,16 +21,11 @@ context(MongoDatabase, LlmConnection)
 fun Application.processPCUpdates() {
     val applicationScope = CoroutineScope(this.coroutineContext + SupervisorJob())
     environment.monitor.subscribe(ApplicationStopping) {
+        logger.info { "Stopping player character change flow" }
         applicationScope.cancel()
     }
     applicationScope.launch {
-        logger.info { "Starting player character update flow" }
-        consumePlayerCharacterUpdates().flowOn(Dispatchers.IO).collect { pc ->
-            val backstory = pc.backstory.value
-            logger.info { "Summarizing ${pc.name.value}'s backstory" }
-            val summary = generateBackstorySummary(backstory)
-            logger.info { "Storing ${pc.name}'s backstory summary" }
-            storeBackstorySummary(summary, pc.id.value)
-        }
+        logger.info { "Starting player character change flow" }
+        processPlayerCharacterOperations(subscribeToPlayerCharacterChanges())
     }
 }
