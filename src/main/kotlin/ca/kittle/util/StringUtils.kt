@@ -15,6 +15,8 @@ val json =
         explicitNulls = false
     }
 
+const val QUOTES = "\"\"\""
+
 private val random = SecureRandom()
 
 fun randomUUIDv7(): UUID {

@@ -76,7 +76,7 @@ data class LlmConnection(
     val model: String = DEFAULT_MODEL,
 )
 
-private const val DEFAULT_MODEL = "llama3"
+private const val DEFAULT_MODEL = "llama3.1"
 
 @Serializable
 data class GenerateRequest(
